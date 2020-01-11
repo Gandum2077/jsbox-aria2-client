@@ -1,14 +1,14 @@
 {
   "info": {
-    "name": "",
-    "url": "",
+    "name": "JSBoxAria2Client",
+    "url": "https://github.com/Gandum2077/jsbox-aria2-client",
     "version": "1.0.0",
-    "author": "",
-    "website": "",
+    "author": "Gandum2077",
+    "website": "https://github.com/Gandum2077",
     "types": 0
   },
   "settings": {
-    "minSDKVer": "1.55.0",
+    "minSDKVer": "2.0.0",
     "minOSVer": "11.0.0",
     "idleTimerDisabled": false,
     "autoKeyboardEnabled": false,
