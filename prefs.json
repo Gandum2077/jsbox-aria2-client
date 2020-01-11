@@ -90,14 +90,9 @@
           "value": "Gandum2077"
         },
         {
-          "title": "Website",
-          "type": "link",
-          "value": "https://github.com/Gandum2077"
-        },
-        {
           "title": "Report bugs",
           "type": "link",
-          "value": "https://github.com/Gandum2077/JSAria2Client"
+          "value": "https://github.com/Gandum2077/jsbox-aria2-client/issues"
         }
       ]
     }
