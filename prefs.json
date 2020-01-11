@@ -1,0 +1,105 @@
+{
+  "title": "Settings",
+  "groups": [
+    {
+      "title": "General",
+      "items": [
+        {
+          "title": "Refresh Interval",
+          "type": "integer",
+          "key": "refresh_interval",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "title": "RPC",
+      "items": [
+        {
+          "title": "Host",
+          "type": "string",
+          "key": "host",
+          "value": "localhost"
+        },
+        {
+          "title": "Port",
+          "type": "integer",
+          "key": "port",
+          "value": 6800
+        },
+        {
+          "title": "Path",
+          "type": "string",
+          "key": "path",
+          "value": "/jsonrpc"
+        },
+        {
+          "title": "SSL/TLS",
+          "type": "boolean",
+          "key": "secure",
+          "value": false
+        },
+        {
+          "title": "token",
+          "type": "string",
+          "key": "secret"
+        }
+      ]
+    },
+    {
+      "title": "Downloads",
+      "items": [
+        {
+          "title": "Directory",
+          "type": "string",
+          "key": "directory",
+          "value": "/tmp"
+        },
+        {
+          "title": "Download Limit",
+          "type": "integer",
+          "key": "download_limit",
+          "value": 0
+        },
+        {
+          "title": "Upload Limit",
+          "type": "integer",
+          "key": "upload_limit",
+          "value": 0
+        },
+        {
+          "title": "Max Downloading",
+          "type": "integer",
+          "key": "concurrent_downloads",
+          "value": 5
+        },
+        {
+          "title": "User Agent",
+          "type": "string",
+          "key": "user_agent",
+          "value": "uTorrent/2210(25130)"
+        }
+      ]
+    },
+    {
+      "title": "About",
+      "items": [
+        {
+          "title": "Author",
+          "type": "info",
+          "value": "Gandum2077"
+        },
+        {
+          "title": "Website",
+          "type": "link",
+          "value": "https://github.com/Gandum2077"
+        },
+        {
+          "title": "Report bugs",
+          "type": "link",
+          "value": "https://github.com/Gandum2077/JSAria2Client"
+        }
+      ]
+    }
+  ]
+}
