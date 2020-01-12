@@ -69,18 +69,9 @@ async function callRPC(method, params) {
 }
 
 async function changePrefs() {
-    const a = $ui.window
-    $prefs.open()
-    await $wait(0.1)
-    let unfinished = true
-    while(unfinished) {
-        const b = $ui.window
-        if (a === b) {
-            unfinished = false 
-        }
-        await $wait(0.1)
-    }
-    return true
+    return new Promise((resolve, reject) => {
+        $prefs.open(() =>resolve())
+      })
 }
 
 async function getStatus() {
