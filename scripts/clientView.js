@@ -1,4 +1,4 @@
-utility = require('./utility')
+const tility = require('./utility')
 
 function defineToolsView() {
     const buttonAdd = {
@@ -300,7 +300,7 @@ function getData(result) {
             return {
                 background: {
                     info: {
-                        percentage: parseInt(n.completedLength) / parseInt(n.totalLength),
+                        percentage: (n.totalLength !== "0") ? parseInt(n.completedLength) / parseInt(n.totalLength) : 0,
                         innerColor: colors[n.status]
                     }
                 },
@@ -316,10 +316,14 @@ function getData(result) {
                     }
                 },
                 speed: {
-                    text: (n.status === "complete") ? '' : `⇣${utility.getAdjustedFormatBytes(n.downloadSpeed)}/s ⇡${utility.getAdjustedFormatBytes(n.uploadSpeed)}/s`
+                    text: (n.status === "complete")
+                        ? '' 
+                        : `⇣${utility.getAdjustedFormatBytes(n.downloadSpeed)}/s ⇡${utility.getAdjustedFormatBytes(n.uploadSpeed)}/s`
                 },
                 size: {
-                    text: (n.status === "complete") ? utility.getAdjustedFormatBytes(n.totalLength) : utility.getAdjustedFormatBytes(n.completedLength) + '/' + utility.getAdjustedFormatBytes(n.totalLength)
+                    text: (n.status === "complete") 
+                        ? utility.getAdjustedFormatBytes(n.totalLength) 
+                        : utility.getAdjustedFormatBytes(n.completedLength) + '/' + utility.getAdjustedFormatBytes(n.totalLength)
                 }
             }
         })
@@ -359,10 +363,10 @@ function defineListView() {
             didSelect: async function(sender, indexPath, data) {
                 const info = data.title.info
                 if (info.status === 'paused' || info.status === 'error') {
-                    await callRPC("unpause", [info.gid])
+                    await utility.callRPC("unpause", [info.gid])
                     await refresh()
                 } else if (info.status === 'active' || info.status === 'waiting') {
-                    await callRPC("pause", [info.gid])
+                    await utility.callRPC("pause", [info.gid])
                     await refresh()
                 }
             }
