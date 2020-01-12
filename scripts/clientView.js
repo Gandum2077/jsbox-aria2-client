@@ -1,4 +1,4 @@
-const tility = require('./utility')
+const utility = require('./utility')
 
 function defineToolsView() {
     const buttonAdd = {
