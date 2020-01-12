@@ -1,4 +1,4 @@
-utility = require('./utility')
+const utility = require('./utility')
 
 async function welcome() {
     await utility.changePrefs()

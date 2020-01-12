@@ -1,3 +1,4 @@
+const utility = require('./utility')
 const clientViewGenerator = require('./clientView')
 const welcome = require('./welcome')
 
@@ -9,7 +10,7 @@ async function init() {
             navButtons: [{
                 title: "Settings",
                 handler: async () => {
-                    await changePrefs()
+                    await utility.changePrefs()
                 }
             }]
         },
