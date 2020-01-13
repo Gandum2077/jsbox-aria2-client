@@ -31,6 +31,29 @@ function getAdjustedFormatBytes(bytes) {
     }
 }
 
+function bitfield(text) {
+    const graphic = "░▒▓█"
+    const len = text.length
+    let result = ""
+    for (let i = 0; i < len; i++) {
+        result += graphic[Math.floor(parseInt(text[i], 16) / 4)] + '\u200B'
+    }
+    return result
+}
+
+
+function bitfieldToPercent(text) {
+    const len = text.length - 1
+    let p, one = 0
+    for (let i = 0; i < len; i++) {
+        p = parseInt(text[i], 16)
+        for (let j = 0; j < 4; j++) {
+            one += (p & 1)
+            p >>= 1
+        }
+    }
+    return Math.floor(one / (4 * len) * 100).toString()
+}
 
 function getOptions() {
     const options = {
@@ -110,10 +133,36 @@ async function getVersion() {
     }
 }
 
+function convertInvalidChrOfPeerId(s) {
+    const slices = []
+    while (s) {
+        if (s[0] === "%") {
+            slices.push(s.substring(0,3))
+            s = s.slice(3)
+        } else {
+            slices.push(s[0])
+            s = s.slice(1)
+        }
+    }
+    for (let idx in slices) {
+        const value = slices[idx]
+        if (value.length === 3) {
+            const index = parseInt(value.substring(1, 3), 16)
+            if (index < 20 || index > 126) {
+                slices[idx] = "%30"
+            }
+        }
+    }
+    return slices.join('')
+}
+
 module.exports = {
     getAdjustedFormatBytes: getAdjustedFormatBytes,
+    bitfield: bitfield,
+    bitfieldToPercent: bitfieldToPercent,
     callRPC: callRPC,
     changePrefs: changePrefs,
     getStatus: getStatus,
-    getVersion: getVersion
+    getVersion: getVersion,
+    convertInvalidChrOfPeerId: convertInvalidChrOfPeerId
 }
