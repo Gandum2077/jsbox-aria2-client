@@ -2,8 +2,7 @@
 JSBox版Aria2客户端。
 
 ## Requirements
-- JSBox>2.0.0
-- npm module `aria2`
+- JSBox>=1.60.0
 
 ## Usage
 1. 开启aria2，并启用RPC
@@ -22,8 +21,7 @@ aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all --rpc-secret=12
 
 3. 操作方式：轻点查看细节，长按开始/暂停，左滑删除
 
-## Known Bugs
-- 此应用需要开启双运行时并频繁交互，所以可能刚开始能运行，但一段时间以后崩溃或者无反应（也可能不会，概率性发生）。这是暂时无解的问题。
 
 ## Acknowledgment
-- 本项目参考[YAAW](https://github.com/binux/yaaw)
+- [YAAW](https://github.com/binux/yaaw)
+- [aria2.js](https://github.com/sonnyp/aria2.js)
