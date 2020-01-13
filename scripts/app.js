@@ -11,6 +11,8 @@ async function init() {
                 title: "Settings",
                 handler: async () => {
                     await utility.changePrefs()
+                    const version = await utility.getVersion()
+                    $("labelVersion").text = "Aria2" + " " + version
                 }
             }]
         },
@@ -26,6 +28,8 @@ async function init() {
         await welcome.welcome()
     }
     $ui.window.add(clientViewGenerator.defineClientView())
+    await $wait(1)
+    $app.tips("操作方式：轻点查看细节，长按开始/暂停，左滑删除")
 }
 
 module.exports = {
