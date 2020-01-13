@@ -1,4 +1,5 @@
 const utility = require('./utility')
+const detailViewGenerator = require('./detailView')
 
 function defineToolsView() {
     const buttonAdd = {
@@ -280,7 +281,8 @@ function getData(result) {
             waiting: $color("white"),
             paused: $color("yellow"),
             error: $color("red"),
-            complete: $color("green")
+            complete: $color("green"),
+            removed: $color("gray")
         }
         const icons = {
             active: 'icloud.and.arrow.down.fill',
@@ -288,6 +290,7 @@ function getData(result) {
             paused: 'pause.circle',
             error: 'xmark.circle.fill',
             complete: 'checkmark.circle.fill',
+            removed: 'trash.fill'
         }
         return items.map(n => {
             let title = ''
@@ -337,7 +340,23 @@ function defineListView() {
         props: {
             id: "list",
             rowHeight: 64,
-            template: template
+            template: template,
+            actions: [
+                {
+                    title: "remove",
+                    color: $color("red"), 
+                    handler: async function(sender, indexPath) {
+                        const info = sender.data[indexPath.row].title.info
+                        try {
+                            await utility.callRPC("remove", [info.gid])
+                            await refresh()
+                        } catch(err) {
+                            console.info(err)
+                            $ui.toast("remove失败")
+                        }
+                    }
+                }
+            ]
         },
         layout: function(make, view) {
             make.top.equalTo($("toolsView").bottom)
@@ -349,7 +368,9 @@ function defineListView() {
                 const version = await utility.getVersion()
                 $("labelVersion").text = "Aria2" + " " + version
                 while(sender.super) {
-                    await refresh()
+                    if (!sender.hasActiveAction) {
+                        await refresh()
+                    }
                     await $wait($prefs.get("refresh_interval") || 5)
                 }
             },
@@ -360,7 +381,11 @@ function defineListView() {
                 inner.frame = $rect(0, 0, wrapper.frame.width * percentage, wrapper.frame.height)
                 inner.bgcolor = wrapper.info.innerColor
             },
-            didSelect: async function(sender, indexPath, data) {
+            didSelect: function(sender, indexPath, data) {
+                const info = data.title.info
+                detailViewGenerator.init(info.gid)
+            },
+            didLongPress: async function(sender, indexPath, data) {
                 const info = data.title.info
                 if (info.status === 'paused' || info.status === 'error') {
                     await utility.callRPC("unpause", [info.gid])
@@ -392,12 +417,12 @@ function defineClientView() {
 }
 
 async function refresh() {
+    const list = $('list')
     const result = await utility.getStatus()
-    if (result) {
-        console.info(result)
-        $('list').data = getData(result)
+    if (result && !list.hasActiveAction) {
+        list.data = getData(result)
+        $("labelSpeed").text = `▼ ${utility.getAdjustedFormatBytes(result.downloadSpeed)}/s  ▲ ${utility.getAdjustedFormatBytes(result.uploadSpeed)}/s`
     }
-    $("labelSpeed").text = `▼ ${utility.getAdjustedFormatBytes(result.downloadSpeed)}/s  ▲ ${utility.getAdjustedFormatBytes(result.uploadSpeed)}/s`
 }
 
 
