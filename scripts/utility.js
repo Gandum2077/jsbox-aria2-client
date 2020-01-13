@@ -1,3 +1,5 @@
+const Aria2 = require('./aria2/Aria2')
+
 /**
  * convert size in bytes to KB, MB, GB...
  * @param {number|string} bytes
@@ -67,28 +69,15 @@ function getOptions() {
 }
 
 async function callRPC(method, params) {
+    params = params || []
     const options = getOptions()
-    const query = {
-        options: options,
-        method: method,
-        params: params
+    const aria2 = new Aria2(options)
+    try {
+        const result = await aria2.call(method, ...params)
+        return result.result
+    } catch(err) {
+        console.info(err)
     }
-    return new Promise((resolve, reject) => {
-        $nodejs.run({
-            path: "scripts/aria2.js",
-            query: query,
-            listener: {
-                id: "eventId",
-                handler: result => {
-                    if (result.response) {
-                        resolve(result.response)
-                    } else {
-                        reject(result.error)
-                    }
-                }
-            }
-        })
-    })
 }
 
 async function changePrefs() {
