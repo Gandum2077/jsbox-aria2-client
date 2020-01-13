@@ -348,7 +348,11 @@ function defineListView() {
                     handler: async function(sender, indexPath) {
                         const info = sender.data[indexPath.row].title.info
                         try {
-                            await utility.callRPC("remove", [info.gid])
+                            if (["complete", "error", "removed"].indexOf(info.status) !== -1) {
+                                await utility.callRPC("removeDownloadResult", [info.gid])
+                            } else {
+                                await utility.callRPC("remove", [info.gid])
+                            }
                             await refresh()
                         } catch(err) {
                             console.info(err)
