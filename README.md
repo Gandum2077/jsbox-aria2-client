@@ -7,7 +7,7 @@ JSBox版Aria2客户端。
 
 ## Usage
 1. 开启aria2，并启用RPC
-- 请参考[aria2文档](https://aria2.github.io/manual/en/html/aria2c.htm)
+- 请参考[aria2文档](https://aria2.github.io/manual/en/html/aria2c.html)
 
 - 快速设置可以参考如下命令，此命令会开启aria2，启用RPC，允许全部外部连接，后台运行，并设定token为123
 
