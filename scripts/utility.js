@@ -76,6 +76,13 @@ async function callRPC(method, params) {
     return result.result
 }
 
+async function multicallRPC(multicall) {
+    const options = getOptions()
+    const aria2 = new Aria2(options)
+    const results = await aria2.multicall(multicall)
+    console.info(results)
+}
+
 async function changePrefs() {
     return new Promise((resolve, reject) => {
         $prefs.open(() =>resolve())
@@ -171,6 +178,7 @@ module.exports = {
     bitfieldToPercent: bitfieldToPercent,
     getOptions: getOptions,
     callRPC: callRPC,
+    multicallRPC: multicallRPC,
     changePrefs: changePrefs,
     getGlobalOptionFromServer: getGlobalOptionFromServer,
     setGlobalOptionToPrefs: setGlobalOptionToPrefs,

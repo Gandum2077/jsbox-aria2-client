@@ -6,7 +6,7 @@ function defineUriInputView() {
         type: "text",
         props: {
             id: "textUri",
-            placeholder: "HTTP, FTP or Magnet",
+            placeholder: "HTTP, FTP or Magnet\n可添加多个链接，每个链接占一行即可",
             borderWidth: 1,
             borderColor: $color("#c6c6c8"),
             radius: 10,
@@ -235,7 +235,7 @@ function defineOptionList() {
                             if (text) {
                                 OPTIONS[n.content.info.key] = text
                             }
-                    })
+                        })
                     }
                 }
             }
@@ -252,7 +252,7 @@ function defineOptionList() {
                 type: "label",
                 props: {
                     height: 20,
-                    text: "额外设置，若不需要留空即可",
+                    text: "额外设置，若不需要留空即可，添加多个URI则File Name无效",
                     align: $align.center,
                     font: $font(12)
                 }
@@ -333,6 +333,9 @@ async function pushAddActionView() {
                 dealloc: function() {
                     if (RESULT) {
                         if (OPTIONS && Object.keys(OPTIONS).length === 0) OPTIONS = undefined
+                        if (OPTIONS && RESULT.type === 'uri' && RESULT.uris.length > 1) {
+                            delete OPTIONS.out
+                        }
                         RESULT.options = OPTIONS
                         resolve(RESULT)
                     } else {

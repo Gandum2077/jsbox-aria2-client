@@ -21,12 +21,15 @@ function defineToolsView() {
                 console.info(result)
                 switch (result.type) {
                     case "uri":
-                        try {
+                        const multicall = result.uris.map(n => {
                             if (result.options) {
-                                await utility.callRPC('addUri', [result.uris, result.options])
+                                return ['addUri', [n], result.options]
                             } else {
-                                await utility.callRPC('addUri', [result.uris])
+                                return ['addUri', [n]]
                             }
+                        })
+                        try {
+                            await utility.multicallRPC(multicall)
                             await refresh()
                         } catch(err) {
                             $ui.toast("失败")

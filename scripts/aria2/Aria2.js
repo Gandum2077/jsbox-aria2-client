@@ -24,6 +24,15 @@ class Aria2 extends JSONRPCClient {
     async call(method, ...params) {
         return super.call(prefix(method), this.addSecret(params));
     }
+
+    async multicall(calls) {
+        const multi = [
+            calls.map(([method, ...params]) => {
+                return { methodName: prefix(method), params: this.addSecret(params) };
+            })
+        ];
+        return super.call("system.multicall", multi);
+    }
 }
 
 Object.assign(Aria2, { prefix, unprefix });
