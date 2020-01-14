@@ -22,6 +22,6 @@ aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all --rpc-secret=12
 3. 操作方式：轻点查看细节，长按开始/暂停，左滑删除
 
 
-## Acknowledgment
+## Acknowledgments
 - [YAAW](https://github.com/binux/yaaw)
 - [aria2.js](https://github.com/sonnyp/aria2.js)
