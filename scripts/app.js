@@ -10,9 +10,11 @@ async function init() {
             navButtons: [{
                 title: "Settings",
                 handler: async () => {
-                    await utility.changePrefs()
-                    const version = await utility.getVersion()
-                    $("labelVersion").text = "Aria2" + " " + version
+                    await welcome()
+                    if ($("labelVersion")) {
+                        const version = await utility.getVersion()
+                        $("labelVersion").text = "Aria2" + " " + version
+                    }
                 }
             }]
         },
@@ -25,8 +27,10 @@ async function init() {
             title: "请先进行初始设置",
             actions: [{title: "OK"}]
         })
-        await welcome.welcome()
+        await welcome()
     }
+    const result = await utility.getGlobalOptionFromServer()
+    utility.setGlobalOptionToPrefs(result)
     $ui.window.add(clientViewGenerator.defineClientView())
     await $wait(1)
     $app.tips("操作方式：轻点查看细节，长按开始/暂停，左滑删除")

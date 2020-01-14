@@ -1,6 +1,8 @@
+const _ = require('lodash')
 const utility = require('./utility')
 
 async function welcome() {
+    const oldOptions = utility.getOptions()
     await utility.changePrefs()
     let version = await utility.getVersion()
     while (!version) {
@@ -15,10 +17,14 @@ async function welcome() {
         } else {
             $app.close()
         }
-        
+    }
+    const newOptions = utility.getOptions()
+    if (_.isEqual(oldOptions, newOptions)) {
+        await utility.changeGlobalOptionForServer()
+    } else {
+        const result = await utility.getGlobalOptionFromServer()
+        utility.setGlobalOptionToPrefs(result)
     }
 }
 
-module.exports = {
-    welcome: welcome
-}
+module.exports = welcome

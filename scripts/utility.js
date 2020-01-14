@@ -72,18 +72,40 @@ async function callRPC(method, params) {
     params = params || []
     const options = getOptions()
     const aria2 = new Aria2(options)
-    try {
-        const result = await aria2.call(method, ...params)
-        return result.result
-    } catch(err) {
-        console.info(err)
-    }
+    const result = await aria2.call(method, ...params)
+    console.info(result.result)
+    return result.result
 }
 
 async function changePrefs() {
     return new Promise((resolve, reject) => {
         $prefs.open(() =>resolve())
       })
+}
+
+async function getGlobalOptionFromServer() {
+    const result = await callRPC("getGlobalOption")
+    return result
+}
+
+function setGlobalOptionToPrefs(result) {
+    $prefs.set("dir", result["dir"] || "/tmp")
+    $prefs.set("max-overall-download-limit", parseInt(result["max-overall-download-limit"]) || 0)
+    $prefs.set("max-overall-upload-limit", parseInt(result["max-overall-upload-limit"]) || 0)
+    $prefs.set("max-concurrent-downloads", parseInt(result["max-concurrent-downloads"]) || 5)
+    $prefs.set("user-agent", result["user-agent"] || "")
+}
+
+async function changeGlobalOptionForServer() {
+    const result = {
+        "dir": $prefs.get("dir"),
+        "max-overall-download-limit": $prefs.get("max-overall-download-limit").toString(),
+        "max-overall-upload-limit": $prefs.get("max-overall-upload-limit").toString(),
+        "max-concurrent-downloads": $prefs.get("max-concurrent-downloads").toString(),
+        "user-agent": $prefs.get("user-agent")
+    }
+    console.info(result)
+    await callRPC("changeGlobalOption", [result])
 }
 
 async function getStatus() {
@@ -149,8 +171,12 @@ module.exports = {
     getAdjustedFormatBytes: getAdjustedFormatBytes,
     bitfield: bitfield,
     bitfieldToPercent: bitfieldToPercent,
+    getOptions: getOptions,
     callRPC: callRPC,
     changePrefs: changePrefs,
+    getGlobalOptionFromServer: getGlobalOptionFromServer,
+    setGlobalOptionToPrefs: setGlobalOptionToPrefs,
+    changeGlobalOptionForServer: changeGlobalOptionForServer,
     getStatus: getStatus,
     getVersion: getVersion,
     convertInvalidChrOfPeerId: convertInvalidChrOfPeerId

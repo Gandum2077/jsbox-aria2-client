@@ -40,44 +40,44 @@
           "value": false
         },
         {
-          "title": "token",
+          "title": "Token",
           "type": "string",
           "key": "secret"
         }
       ]
     },
     {
-      "title": "Downloads",
+      "title": "Downloads\n若本次设置更改了RPC，则本栏更改均无效，会优先从服务端更新配置",
       "items": [
         {
           "title": "Directory",
           "type": "string",
-          "key": "directory",
+          "key": "dir",
           "value": "/tmp"
         },
         {
           "title": "Download Limit",
           "type": "integer",
-          "key": "download_limit",
+          "key": "max-overall-download-limit",
           "value": 0
         },
         {
           "title": "Upload Limit",
           "type": "integer",
-          "key": "upload_limit",
+          "key": "max-overall-upload-limit",
           "value": 0
         },
         {
           "title": "Max Downloading",
           "type": "integer",
-          "key": "concurrent_downloads",
+          "key": "max-concurrent-downloads",
           "value": 5
         },
         {
           "title": "User Agent",
           "type": "string",
-          "key": "user_agent",
-          "value": "uTorrent/2210(25130)"
+          "key": "user-agent",
+          "value": ""
         }
       ]
     },
@@ -90,7 +90,7 @@
           "value": "Gandum2077"
         },
         {
-          "title": "Report bugs",
+          "title": "Report Bugs",
           "type": "link",
           "value": "https://github.com/Gandum2077/jsbox-aria2-client/issues"
         }
