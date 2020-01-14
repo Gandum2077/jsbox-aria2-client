@@ -73,7 +73,6 @@ async function callRPC(method, params) {
     const options = getOptions()
     const aria2 = new Aria2(options)
     const result = await aria2.call(method, ...params)
-    console.info(result.result)
     return result.result
 }
 
@@ -104,7 +103,6 @@ async function changeGlobalOptionForServer() {
         "max-concurrent-downloads": $prefs.get("max-concurrent-downloads").toString(),
         "user-agent": $prefs.get("user-agent")
     }
-    console.info(result)
     await callRPC("changeGlobalOption", [result])
 }
 

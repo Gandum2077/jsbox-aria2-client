@@ -1,5 +1,6 @@
 const utility = require('./utility')
 const detailViewGenerator = require('./detailView')
+const pushAddActionView = require('./addActionView')
 
 function defineToolsView() {
     const buttonAdd = {
@@ -16,15 +17,37 @@ function defineToolsView() {
         },
         events: {
             tapped: async function(sender) {
-                const uri = await $input.text()
-                if (uri) {
-                    try {
-                        await utility.callRPC('addUri', [[uri]])
-                        await refresh()
-                    } catch(err) {
-                        $ui.toast("失败")
-                        console.info(err)
-                    }
+                const result = await pushAddActionView()
+                console.info(result)
+                switch (result.type) {
+                    case "uri":
+                        try {
+                            if (result.options) {
+                                await utility.callRPC('addUri', [result.uris, result.options])
+                            } else {
+                                await utility.callRPC('addUri', [result.uris])
+                            }
+                            await refresh()
+                        } catch(err) {
+                            $ui.toast("失败")
+                            console.info(err)
+                        }
+                        break;
+                    case "torrent":
+                        try {
+                            if (result.options) {
+                                await utility.callRPC('addTorrent', [result.base64, result.options])
+                            } else {
+                                await utility.callRPC('addTorrent', [result.base64])
+                            }
+                            await refresh()
+                        } catch(err) {
+                            $ui.toast("失败")
+                            console.info(err)
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
         }
