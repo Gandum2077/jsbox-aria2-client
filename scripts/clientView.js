@@ -12,8 +12,12 @@ function defineToolsView() {
         },
         layout: function(make, view) {
             make.centerY.equalTo(view.super)
-            make.left.inset(20)
-            make.size.equalTo($size(70, 32))
+            make.left.inset(25)
+            make.height.equalTo(32)
+            make.width
+                .equalTo(view.super.width)
+                .multipliedBy(0.25)
+                .offset(-(80 / 4))
         },
         events: {
             tapped: async function(sender) {
@@ -74,8 +78,9 @@ function defineToolsView() {
         }],
         layout: function(make, view) {
             make.centerY.equalTo(view.super)
-            make.left.equalTo($("buttonAdd").right).inset(10)
-            make.size.equalTo($size(70, 32))
+            make.left.equalTo($('buttonAdd').right).offset(10)
+            make.height.equalTo(32)
+            make.width.equalTo($('buttonAdd').width)
         },
         events: {
             tapped: async function(sender) {
@@ -93,7 +98,7 @@ function defineToolsView() {
         type: "button",
         props: {
             id: "buttonPauseAll",
-            bgcolor: $color("gray")
+            bgcolor: $color("orange")
         },
         views: [{
             type: "image",
@@ -108,8 +113,9 @@ function defineToolsView() {
         }],
         layout: function(make, view) {
             make.centerY.equalTo(view.super)
-            make.left.equalTo($("buttonUnpauseAll").right).inset(10)
-            make.size.equalTo($size(70, 32))
+            make.left.equalTo($('buttonUnpauseAll').right).offset(10)
+            make.height.equalTo(32)
+            make.width.equalTo($('buttonUnpauseAll').width)
         },
         events: {
             tapped: async function(sender) {
@@ -141,8 +147,9 @@ function defineToolsView() {
         }],
         layout: function(make, view) {
             make.centerY.equalTo(view.super)
-            make.left.equalTo($("buttonPauseAll").right).inset(10)
-            make.size.equalTo($size(70, 32))
+            make.left.equalTo($('buttonPauseAll').right).offset(10)
+            make.height.equalTo(32)
+            make.width.equalTo($('buttonPauseAll').width)
         },
         events: {
             tapped: async function(sender) {
