@@ -16,22 +16,22 @@ function formatBytes(bytes, decimals = 2) {
 }
 
 /**
- * convert time in seconds to hh:mm:ss
- * @param {number|string} seconds 
+ * convert time in seconds to format
+ * @param {number|string} s 
  */
-function formatTime(seconds) {
-    var sec_num = parseInt(seconds, 10); // don't forget the second param
-    var hours   = Math.floor(sec_num / 3600);
+function formatTime(s) {
+    const sec_num = parseInt(s); // don't forget the second param
+    const hours = Math.floor(sec_num / 3600);
     if (hours >= 24){
         return "1d";
     }
-    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-    if (hours   < 10) {hours   = "0"+hours;}
-    if (minutes < 10) {minutes = "0"+minutes;}
-    if (seconds < 10) {seconds = "0"+seconds;}
-    return hours + ':' + minutes + ':' + seconds;
+    const minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    const seconds = sec_num - (hours * 3600) - (minutes * 60);
+    let result = ''
+    if (hours) result += `${hours}h`
+    if (minutes || hours) result += `${minutes}m`
+    result += `${seconds}s`
+    return result
 }
 
 function getAdjustedFormatBytes(bytes) {

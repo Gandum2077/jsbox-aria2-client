@@ -278,20 +278,6 @@ const template = {
         {
             type: "label",
             props:{
-                id: "speed",
-                align: $align.left,
-                font: $font(11),
-                autoFontSize: true
-            },
-            layout: function(make, view) {
-                make.size.equalTo($size(150, 32))
-                make.bottom.inset(0)
-                make.left.equalTo($("icon").right).inset(10)
-            }
-        },
-        {
-            type: "label",
-            props:{
                 id: "size",
                 align: $align.right,
                 font: $font(11),
@@ -305,16 +291,17 @@ const template = {
         },
         {
             type: "label",
-            props: {
-                id: "rtime",
-                align: $align.right,
+            props:{
+                id: "speed",
+                align: $align.left,
                 font: $font(11),
                 autoFontSize: true
             },
             layout: function(make, view) {
-                make.size.equalTo($size(110, 32))
+                make.height.equalTo(32)
                 make.bottom.inset(0)
-                make.right.inset(130)
+                make.left.equalTo($("icon").right).inset(10)
+                make.right.equalTo($("size").left)
             }
         }
     ]
@@ -346,7 +333,14 @@ function getData(result) {
             } else if (n.files.length === 1 && n.files[0].path) {
                 title = n.files[0].path.split('/').pop()
             }
-
+            const speedText = (n.status === "complete")
+                ? '' 
+                : `⇣${utility.getAdjustedFormatBytes(n.downloadSpeed)}/s ⇡${utility.getAdjustedFormatBytes(n.uploadSpeed)}/s`
+            const remainingTime = (n.status === "active")
+                ? (parseInt(n.downloadSpeed)) 
+                    ? " ETA: " + utility.formatTime((parseInt(n.totalLength) - parseInt(n.completedLength))/parseInt(n.downloadSpeed))
+                    : " ETA: INF"
+                : ''
             return {
                 background: {
                     info: {
@@ -361,24 +355,16 @@ function getData(result) {
                     text: title,
                     info: {
                         gid: n.gid,
-                        status: n.status,
-
+                        status: n.status
                     }
                 },
                 speed: {
-                    text: (n.status === "complete")
-                        ? '' 
-                        : `⇣${utility.getAdjustedFormatBytes(n.downloadSpeed)}/s ⇡${utility.getAdjustedFormatBytes(n.uploadSpeed)}/s`
+                    text: speedText + remainingTime
                 },
                 size: {
                     text: (n.status === "complete") 
                         ? utility.getAdjustedFormatBytes(n.totalLength) 
                         : utility.getAdjustedFormatBytes(n.completedLength) + '/' + utility.getAdjustedFormatBytes(n.totalLength)
-                },
-                rtime: {
-                    text: (n.status === "active")
-                        ? utility.formatTime((parseFloat(n.totalLength) - parseFloat(n.completedLength))/n.downloadSpeed)
-                        : n.status 
                 }
             }
         })
