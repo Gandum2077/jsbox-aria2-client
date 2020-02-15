@@ -302,6 +302,20 @@ const template = {
                 make.bottom.inset(0)
                 make.right.inset(10)
             }
+        },
+        {
+            type: "label",
+            props: {
+                id: "rtime",
+                align: $align.right,
+                font: $font(11),
+                autoFontSize: true
+            },
+            layout: function(make, view) {
+                make.size.equalTo($size(110, 32))
+                make.bottom.inset(0)
+                make.right.inset(130)
+            }
         }
     ]
 }
@@ -360,6 +374,11 @@ function getData(result) {
                     text: (n.status === "complete") 
                         ? utility.getAdjustedFormatBytes(n.totalLength) 
                         : utility.getAdjustedFormatBytes(n.completedLength) + '/' + utility.getAdjustedFormatBytes(n.totalLength)
+                },
+                rtime: {
+                    text: (n.status === "active")
+                        ? utility.formatTime((parseFloat(n.totalLength) - parseFloat(n.completedLength))/n.downloadSpeed)
+                        : n.status 
                 }
             }
         })

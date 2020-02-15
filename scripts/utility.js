@@ -15,6 +15,25 @@ function formatBytes(bytes, decimals = 2) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
+/**
+ * convert time in seconds to hh:mm:ss
+ * @param {number|string} seconds 
+ */
+function formatTime(seconds) {
+    var sec_num = parseInt(seconds, 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    if (hours >= 24){
+        return "1d";
+    }
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return hours + ':' + minutes + ':' + seconds;
+}
+
 function getAdjustedFormatBytes(bytes) {
     const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
     const formatedBytes = formatBytes(bytes)
@@ -174,6 +193,7 @@ function convertInvalidChrOfPeerId(s) {
 
 module.exports = {
     getAdjustedFormatBytes: getAdjustedFormatBytes,
+    formatTime: formatTime,
     bitfield: bitfield,
     bitfieldToPercent: bitfieldToPercent,
     getOptions: getOptions,
