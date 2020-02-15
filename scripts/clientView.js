@@ -429,12 +429,25 @@ function defineListView() {
             },
             didLongPress: async function(sender, indexPath, data) {
                 const info = data.title.info
-                if (info.status === 'paused' || info.status === 'error') {
+                if (info.status === 'paused') {
                     await utility.callRPC("unpause", [info.gid])
                     await refresh()
                 } else if (info.status === 'active' || info.status === 'waiting') {
                     await utility.callRPC("pause", [info.gid])
                     await refresh()
+                } else if (info.status === 'error') {
+                    taskStatus = await utility.callRPC("tellStatus", [info.gid])
+                    taskOption = await utility.callRPC("getOption", [info.gid])
+                    taskUris = taskStatus.files[0].uris
+                    const retryUris = taskUris.map(n => {return n.uri})
+                    try {
+                        await utility.callRPC("addUri", [retryUris, taskOption])
+                        await refresh()
+                    } catch(err) {
+                        $ui.toast("失败")
+                        console.info(err)
+                    }
+                    //console.log(retryUris)
                 }
             }
         }
