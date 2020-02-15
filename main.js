@@ -1,4 +1,2 @@
-const app = require("scripts/app")
-
-app.init()
-
+const app = require("scripts/app");
+app.init();
