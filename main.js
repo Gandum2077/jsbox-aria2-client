@@ -1,2 +1,2 @@
-const app = require("scripts/app");
+const app = require("./scripts/app");
 app.init();

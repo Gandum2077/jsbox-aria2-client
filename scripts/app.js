@@ -6,7 +6,7 @@ async function init() {
   const rootView = {
     props: {
       id: "rootView",
-      title: "aria2Client",
+      title: "JSBox Aria2 Client",
       navButtons: [
         {
           title: "Settings",

@@ -14,12 +14,12 @@ function defineUriInputView() {
       autocapitalizationType: 0,
       spellCheckingType: 1
     },
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.top.bottom.inset(10);
       make.left.right.inset(30);
     },
     events: {
-      didEndEditing: function(sender) {
+      didEndEditing: function (sender) {
         const text = sender.text.trim();
         const uris = text.split("\n").filter(n => n.trim());
         if (uris.length) {
@@ -49,13 +49,13 @@ function defineFileSelectionView() {
           id: "button",
           title: "select a torrent file"
         },
-        layout: function(make, view) {
+        layout: function (make, view) {
           make.height.equalTo(50);
           make.top.inset(10);
           make.left.right.inset(30);
         },
         events: {
-          tapped: async function(sender) {
+          tapped: async function (sender) {
             const torrent = await $drive.open();
             if (torrent) {
               sender.super.get("torrentName").text = torrent.fileName;
@@ -79,14 +79,14 @@ function defineFileSelectionView() {
           scrollEnabled: false,
           borderWidth: 0
         },
-        layout: function(make, view) {
+        layout: function (make, view) {
           make.top.equalTo($("button").bottom).inset(10);
           make.bottom.inset(10);
           make.left.right.inset(30);
         }
       }
     ],
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.top.bottom.inset(10);
       make.left.right.inset(30);
     }
@@ -190,16 +190,13 @@ function getData() {
 
 function defineOptionList() {
   const template = {
-    props: {
-      bgcolor: $color("clear")
-    },
     views: [
       {
         type: "label",
         props: {
           id: "title"
         },
-        layout: function(make, view) {
+        layout: function (make, view) {
           make.top.left.bottom.inset(0);
           make.width.equalTo(150);
         }
@@ -216,16 +213,16 @@ function defineOptionList() {
           autocapitalizationType: 0,
           spellCheckingType: 1
         },
-        layout: function(make, view) {
+        layout: function (make, view) {
           make.top.bottom.inset(3);
           make.right.inset(0);
           make.left.equalTo($("title").right);
         },
         events: {
-          returned: function(sender) {
+          returned: function (sender) {
             sender.blur();
           },
-          didEndEditing: function(sender) {
+          didEndEditing: function (sender) {
             OPTIONS = {};
             $("optionList").data.map((n, i) => {
               const text = $("optionList")
@@ -257,7 +254,7 @@ function defineOptionList() {
         }
       }
     },
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.top.equalTo($("contentView").bottom);
       make.bottom.inset(20);
       make.left.right.inset(30);
@@ -274,12 +271,12 @@ function defineAddActionView() {
       items: ["URIs", "Torrent"],
       index: 0
     },
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.top.left.right.inset(0);
       make.height.equalTo(50);
     },
     events: {
-      changed: function(sender) {
+      changed: function (sender) {
         RESULT = undefined;
         const index = sender.index;
         $("contentView").views[0].remove();
@@ -301,7 +298,7 @@ function defineAddActionView() {
     props: {
       id: "contentView"
     },
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.left.right.inset(0);
       make.top.equalTo($("tab").bottom);
       make.height.equalTo(150);
@@ -324,9 +321,10 @@ async function pushAddActionView() {
   RESULT = undefined;
   return new Promise((resolve, reject) => {
     $ui.push({
+      props: { navButtons: [{ title: "" }] },
       views: [defineAddActionView()],
       events: {
-        dealloc: function() {
+        dealloc: function () {
           if (RESULT) {
             if (OPTIONS && Object.keys(OPTIONS).length === 0)
               OPTIONS = undefined;
