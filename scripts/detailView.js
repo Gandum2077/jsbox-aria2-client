@@ -122,9 +122,6 @@ function getDataForStatusInfoView(statusInfo) {
 
 function defineStatusView() {
   const template = {
-    props: {
-      bgcolor: $color("clear")
-    },
     views: [
       {
         type: "label",
@@ -132,7 +129,7 @@ function defineStatusView() {
           id: "title",
           align: $align.left
         },
-        layout: function(make, view) {
+        layout: function (make, view) {
           make.top.left.bottom.inset(0);
           make.width.equalTo(100);
         }
@@ -145,7 +142,7 @@ function defineStatusView() {
           autoFontSize: false,
           lines: 0
         },
-        layout: function(make, view) {
+        layout: function (make, view) {
           make.top.right.bottom.inset(0);
           make.left.equalTo($("title").right);
         }
@@ -156,16 +153,32 @@ function defineStatusView() {
     type: "list",
     props: {
       id: "statusInfoList",
-      selectable: false,
       template: template
     },
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.top.left.right.bottom.inset(30);
     },
     events: {
-      ready: async function(sender) {
+      ready: async function (sender) {
         const info = await utility.callRPC("tellStatus", [GID]);
         sender.data = getDataForStatusInfoView(info);
+      },
+      didSelect: function (sender, indexPath) {
+        const data = sender.data[indexPath.row];
+        $ui.alert({
+          title: data.title.text,
+          message: data.content.text,
+          actions: [
+            {
+              title: "Copy",
+              handler: function () {
+                $clipboard.text = data.content.text;
+                $ui.toast("Copied");
+              }
+            },
+            { title: "OK" }
+          ]
+        });
       }
     }
   };
@@ -189,9 +202,6 @@ function getDataForFilesView(filesInfo) {
 
 function defineFilesView() {
   const template = {
-    props: {
-      bgcolor: $color("clear")
-    },
     views: [
       {
         type: "label",
@@ -199,7 +209,7 @@ function defineFilesView() {
           id: "title",
           lines: 2
         },
-        layout: function(make, view) {
+        layout: function (make, view) {
           make.top.left.bottom.inset(0);
           make.right.inset(80);
         }
@@ -211,7 +221,7 @@ function defineFilesView() {
           lines: 2,
           font: $font(13)
         },
-        layout: function(make, view) {
+        layout: function (make, view) {
           make.top.right.bottom.inset(0);
           make.width.equalTo(80);
         }
@@ -224,13 +234,30 @@ function defineFilesView() {
       id: "filesInfoList",
       template: template
     },
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.top.left.right.bottom.inset(30);
     },
     events: {
-      ready: async function(sender) {
+      ready: async function (sender) {
         const info = await utility.callRPC("tellStatus", [GID]);
         sender.data = getDataForFilesView(info.files);
+      },
+      didSelect: function (sender, indexPath) {
+        const data = sender.data[indexPath.row];
+        $ui.alert({
+          title: "File",
+          message: data.title.text,
+          actions: [
+            {
+              title: "Copy",
+              handler: function () {
+                $clipboard.text = data.title.text;
+                $ui.toast("Copied");
+              }
+            },
+            { title: "OK" }
+          ]
+        });
       }
     }
   };
@@ -269,16 +296,13 @@ function getDataForPeersView(peersInfo) {
 
 function definePeersView() {
   const template = {
-    props: {
-      bgcolor: $color("clear")
-    },
     views: [
       {
         type: "label",
         props: {
           id: "address"
         },
-        layout: function(make, view) {
+        layout: function (make, view) {
           make.top.left.inset(0);
           make.height.equalTo(22);
           make.width.equalTo(250);
@@ -289,7 +313,7 @@ function definePeersView() {
         props: {
           id: "client"
         },
-        layout: function(make, view) {
+        layout: function (make, view) {
           make.left.bottom.inset(0);
           make.height.equalTo(22);
           make.width.equalTo(150);
@@ -301,7 +325,7 @@ function definePeersView() {
           id: "percent",
           align: $align.right
         },
-        layout: function(make, view) {
+        layout: function (make, view) {
           make.top.right.inset(0);
           make.height.equalTo(22);
           make.width.equalTo(100);
@@ -313,7 +337,7 @@ function definePeersView() {
           id: "speed",
           align: $align.right
         },
-        layout: function(make, view) {
+        layout: function (make, view) {
           make.right.bottom.inset(0);
           make.height.equalTo(22);
           make.width.equalTo(200);
@@ -327,11 +351,11 @@ function definePeersView() {
       id: "peersInfoList",
       template: template
     },
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.top.left.right.bottom.inset(30);
     },
     events: {
-      ready: async function(sender) {
+      ready: async function (sender) {
         try {
           const info = await utility.callRPC("getPeers", [GID]);
           sender.data = getDataForPeersView(info);
@@ -352,12 +376,12 @@ function defineDetailView() {
       items: ["status", "files", "peers"],
       index: 0
     },
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.top.left.right.inset(0);
       make.height.equalTo(50);
     },
     events: {
-      changed: function(sender) {
+      changed: function (sender) {
         const index = sender.index;
         $("contentView").views[0].remove();
         switch (index) {
@@ -381,7 +405,7 @@ function defineDetailView() {
     props: {
       id: "contentView"
     },
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.bottom.left.right.inset(0);
       make.top.equalTo($("tab").bottom);
     }
@@ -401,7 +425,8 @@ function init(gid) {
   GID = gid;
   $ui.push({
     props: {
-      title: "Details"
+      title: "Details",
+      navButtons: [{ title: "" }]
     },
     views: [defineDetailView()]
   });

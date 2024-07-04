@@ -10,7 +10,7 @@ function defineToolsView() {
       icon: $icon("104", $color("#ccc"), $size(25, 25)),
       bgcolor: $color("#007aff")
     },
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.centerY.equalTo(view.super);
       make.left.inset(25);
       make.height.equalTo(32);
@@ -20,7 +20,7 @@ function defineToolsView() {
         .offset(-(80 / 4));
     },
     events: {
-      tapped: async function(sender) {
+      tapped: async function (sender) {
         const result = await pushAddActionView();
         console.info(result);
         switch (result.type) {
@@ -82,14 +82,14 @@ function defineToolsView() {
         layout: $layout.fill
       }
     ],
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.centerY.equalTo(view.super);
       make.left.equalTo($("buttonAdd").right).offset(10);
       make.height.equalTo(32);
       make.width.equalTo($("buttonAdd").width);
     },
     events: {
-      tapped: async function(sender) {
+      tapped: async function (sender) {
         try {
           await utility.callRPC("unpauseAll");
           await refresh();
@@ -118,14 +118,14 @@ function defineToolsView() {
         layout: $layout.fill
       }
     ],
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.centerY.equalTo(view.super);
       make.left.equalTo($("buttonUnpauseAll").right).offset(10);
       make.height.equalTo(32);
       make.width.equalTo($("buttonUnpauseAll").width);
     },
     events: {
-      tapped: async function(sender) {
+      tapped: async function (sender) {
         try {
           await utility.callRPC("pauseAll");
           await refresh();
@@ -154,14 +154,14 @@ function defineToolsView() {
         layout: $layout.fill
       }
     ],
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.centerY.equalTo(view.super);
       make.left.equalTo($("buttonPauseAll").right).offset(10);
       make.height.equalTo(32);
       make.width.equalTo($("buttonPauseAll").width);
     },
     events: {
-      tapped: async function(sender) {
+      tapped: async function (sender) {
         try {
           await utility.callRPC("purgeDownloadResult");
           await refresh();
@@ -176,10 +176,10 @@ function defineToolsView() {
     type: "view",
     props: {
       id: "toolsView",
-      bgcolor: $color("#f3f3f4")
+      bgcolor: $color("#f3f3f4", "darkGray")
     },
     views: [buttonAdd, buttonUnpauseAll, buttonPauseAll, buttonRemoveFinished],
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.top.left.right.inset(0);
       make.height.equalTo(50);
     }
@@ -195,7 +195,7 @@ function defineFooterView() {
       text: "⇩0 B/s  ⇧0 B/s",
       align: $align.left
     },
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.top.inset(0);
       make.left.inset(10);
       make.height.equalTo(32);
@@ -209,7 +209,7 @@ function defineFooterView() {
       text: "Aria2",
       align: $align.right
     },
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.top.inset(0);
       make.right.inset(10);
       make.height.equalTo(32);
@@ -220,11 +220,11 @@ function defineFooterView() {
     type: "view",
     props: {
       id: "footerView",
-      bgcolor: $color("#f3f3f4")
+      bgcolor: $color("#f3f3f4", "darkGray")
     },
     views: [labelVersion, labelSpeed],
-    layout: function(make, view) {
-      make.bottom.left.right.inset(0);
+    layout: function (make, view) {
+      make.bottom.left.right.equalTo(view.super.safeArea);
       make.height.equalTo(32);
     }
   };
@@ -232,9 +232,6 @@ function defineFooterView() {
 }
 
 const template = {
-  props: {
-    bgcolor: $color("white")
-  },
   views: [
     {
       type: "view",
@@ -266,7 +263,7 @@ const template = {
       props: {
         id: "icon"
       },
-      layout: function(make, view) {
+      layout: function (make, view) {
         make.size.equalTo($size(30, 30));
         make.centerY.equalTo(view.super);
         make.left.inset(10);
@@ -277,7 +274,7 @@ const template = {
       props: {
         id: "title"
       },
-      layout: function(make, view) {
+      layout: function (make, view) {
         make.height.equalTo(32);
         make.top.inset(0);
         make.left.equalTo($("icon").right).inset(10);
@@ -292,7 +289,7 @@ const template = {
         font: $font(11),
         autoFontSize: true
       },
-      layout: function(make, view) {
+      layout: function (make, view) {
         make.size.equalTo($size(110, 32));
         make.bottom.inset(0);
         make.right.inset(10);
@@ -306,7 +303,7 @@ const template = {
         font: $font(11),
         autoFontSize: true
       },
-      layout: function(make, view) {
+      layout: function (make, view) {
         make.height.equalTo(32);
         make.bottom.inset(0);
         make.left.equalTo($("icon").right).inset(10);
@@ -408,9 +405,9 @@ function defineListView() {
       template: template,
       actions: [
         {
-          title: "remove",
+          title: "Remove",
           color: $color("red"),
-          handler: async function(sender, indexPath) {
+          handler: async function (sender, indexPath) {
             const info = sender.data[indexPath.row].title.info;
             try {
               if (
@@ -429,13 +426,13 @@ function defineListView() {
         }
       ]
     },
-    layout: function(make, view) {
+    layout: function (make, view) {
       make.top.equalTo($("toolsView").bottom);
       make.bottom.equalTo($("footerView").top);
       make.left.right.inset(0);
     },
     events: {
-      ready: async function(sender) {
+      ready: async function (sender) {
         const version = await utility.getVersion();
         $("labelVersion").text = "Aria2" + " " + version;
         while (sender.super) {
@@ -457,11 +454,11 @@ function defineListView() {
         );
         inner.bgcolor = wrapper.info.innerColor;
       },
-      didSelect: function(sender, indexPath, data) {
+      didSelect: function (sender, indexPath, data) {
         const info = data.title.info;
         detailViewGenerator.init(info.gid);
       },
-      didLongPress: async function(sender, indexPath, data) {
+      didLongPress: async function (sender, indexPath, data) {
         const info = data.title.info;
         if (info.status === "paused") {
           await utility.callRPC("unpause", [info.gid]);
